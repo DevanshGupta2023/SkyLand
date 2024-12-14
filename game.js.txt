@@ -1,0 +1,44 @@
+const player = document.getElementById('player');
+const gameContainer = document.getElementById('game-container');
+let playerPosX = 50;
+let playerPosY = 340; // The bottom of the container
+let velocityY = 0;
+let isJumping = false;
+
+const gravity = 1;  // Controls how fast the player falls
+const jumpStrength = -20;  // Controls the jump height
+
+// Game loop to update the position of the player
+function gameLoop() {
+    // Gravity effect
+    if (playerPosY < 340) {
+        velocityY += gravity;
+    } else {
+        velocityY = 0;
+        playerPosY = 340;
+        isJumping = false;
+    }
+
+    playerPosY += velocityY;
+
+    player.style.bottom = `${playerPosY}px`;
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+// Key event listener for player movement
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        playerPosX += 5;
+    } else if (e.key === 'ArrowLeft') {
+        playerPosX -= 5;
+    } else if (e.key === ' ' && !isJumping) {
+        velocityY = jumpStrength;
+        isJumping = true;
+    }
+
+    // Set the new position of the player
+    player.style.left = `${playerPosX}px`;
+});
